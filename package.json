@@ -21,7 +21,7 @@
     "less-loader": "^4.1.0",
     "lodash": "^4.17.13",
     "moment": "^2.24.0",
-    "node-sass": "^4.11.0",
+    "node-sass": "^4.13.1",
     "prism-themes": "^1.0.1",
     "pug": "^2.0.3",
     "pug-plain-loader": "^1.0.0",
