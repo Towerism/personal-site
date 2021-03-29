@@ -23,7 +23,7 @@
     "moment": "^2.24.0",
     "node-sass": "^4.11.0",
     "prism-themes": "^1.0.1",
-    "pug": "^2.0.3",
+    "pug": "^3.0.1",
     "pug-plain-loader": "^1.0.0",
     "qs": "^6.6.0",
     "reading-time": "^1.1.3",
