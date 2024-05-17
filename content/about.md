@@ -1,5 +1,5 @@
 # About me
 
-I am Senior Front End Engineer at Joyent, a subsidiary of Samsung. I am the tech lead for the Client team of the Samsung Private Cloud development group. I design and implement solutions for complex problems. I use technologies such as Vue.js, Nuxt, Pinia, HTML, SCSS.
+As a seasoned senior front-end engineer at Joyent (a Samsung subsidiary), I work on the client team within the Samsung Private Cloud development Group. My days are filled with designing and implementing innovative solutions for complex challenges, leveraging technologies like Vue.js, Nuxt, Pinia, Node.js, GraphQL, HTML, and SCSS.
 
-When I'm not at work, you can find me tinkering around with tech at home, detailing my cars, and spending time with my wife.
+Beyond work, I’m an avid tech tinkerer, a car-detailing enthusiast, and a devoted husband.

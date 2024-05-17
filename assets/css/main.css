@@ -1,0 +1,79 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html {
+  scroll-behavior: smooth;
+}
+
+body,
+.bg-standard {
+  @apply bg-gray-50 dark:bg-gray-900;
+}
+
+/* Headings */
+
+h1 {
+  @apply text-h1_sm leading-h1_sm mb-6;
+}
+
+h2 {
+  @apply text-h2_sm leading-h2_sm mb-4;
+}
+
+h3 {
+  @apply text-h3_sm leading-h3_sm mb-4;
+}
+
+h4 {
+  @apply text-h4_sm leading-h4_sm mb-2;
+}
+
+h5 {
+  @apply text-h5_sm leading-h5_sm mb-1;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5 {
+  @apply tracking-tight mb-4 text-black dark:text-white;
+}
+
+@screen md {
+  h1 {
+    @apply font-bold text-3xl md:text-5xl;
+  }
+
+  h2 {
+    @apply font-bold text-2xl md:text-3xl;
+  }
+
+  h3 {
+    @apply font-bold text-xl md:text-xl;
+  }
+
+  h4 {
+    @apply font-bold text-lg;
+  }
+
+  h5 {
+    @apply font-bold;
+  }
+}
+
+/* Body Text */
+
+p {
+  @apply text-base leading-base mt-2 mb-8;
+}
+
+p,
+li {
+  @apply text-gray-600 dark:text-gray-400;
+}
+
+ul {
+  @apply mb-4;
+}
