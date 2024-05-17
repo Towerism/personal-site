@@ -30,7 +30,7 @@
         >. <br />
         The source code is available on
         <a
-          href="https://github.com/Towerism"
+          href="https://github.com/Towerism/personal-site"
           target="_blank"
           rel="noopener noreferrer"
           class="underline hover:no-underline hover:text-gray-600 transition"
