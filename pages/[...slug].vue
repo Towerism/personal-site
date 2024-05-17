@@ -1,5 +1,5 @@
 <template>
-  <div class="flex flex-col justify-center px-8 pt-4">
+  <div class="flex flex-col justify-center px-8">
     <AppNavBar />
   </div>
   <div class="flex flex-col justify-center px-8 py-4">
