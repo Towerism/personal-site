@@ -51,12 +51,26 @@ import { useStorage } from "@vueuse/core";
 type Theme = "" | "dark" | "light";
 const theme = useStorage<Theme>("theme", "");
 
-watch(theme, (val) => {
+onBeforeMount(() => {
+  if (theme.value) {
+    setTheme(theme.value);
+  } else {
+    if (
+      window.matchMedia("not all and (prefers-color-scheme: light)").matches
+    ) {
+      setTheme("dark");
+    }
+  }
+});
+
+watch(theme, setTheme);
+
+function setTheme(theme: Theme) {
   const root = document.documentElement;
-  if (val === "dark") {
+  if (theme === "dark") {
     root.classList.add("dark");
   } else {
     root.classList.remove("dark");
   }
-});
+}
 </script>
