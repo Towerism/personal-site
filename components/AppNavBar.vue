@@ -62,7 +62,7 @@ function updateScrollLock(val: boolean) {
 }
 
 .mobile-nav-wrapper {
-  @apply flex flex-col divide-y divide-gray-200 -mt-6 h-screen float-left;
+  @apply flex flex-col divide-y divide-gray-200 dark:divide-gray-700 -mt-6 h-screen float-left;
 }
 
 .nav-link,
