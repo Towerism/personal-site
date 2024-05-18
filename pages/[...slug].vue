@@ -1,6 +1,12 @@
 <template>
   <div class="flex flex-col justify-center px-8">
-    <AppNavBar />
+    <AppNavBar
+      :links="[
+        { text: 'Home', props: { to: '/' } },
+        { text: 'Home network', props: { to: '/home-network' } },
+        { text: 'About', props: { to: '/about' } },
+      ]"
+    />
   </div>
   <div class="flex flex-col justify-center px-8 py-4">
     <main

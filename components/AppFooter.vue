@@ -1,7 +1,7 @@
 <template>
-  <footer class="flex flex-col justify-center max-w-2xl mx-auto w-full mb-8">
-    <hr class="w-full border-1 border-gray-200 dark:border-gray-800 mb-8" />
-    <div class="container max-w-lg mx-auto text-center text-gray-700">
+  <footer class="footer">
+    <hr class="footer-top-hr" />
+    <div class="footer-content-wrapper">
       <p class="mb-3 font-semibold">
         © 2024 Martin Fracker, Jr. All rights reserved.
       </p>
@@ -11,7 +11,7 @@
           href="https://v3.nuxtjs.org/"
           target="_blank"
           rel="noopener noreferrer"
-          class="underline hover:no-underline hover:text-gray-600 transition"
+          class="footer-link"
           >Nuxt 3</a
         >
         &amp;
@@ -19,21 +19,18 @@
           href="https://tailwindcss.com/"
           target="_blank"
           rel="noopener noreferrer"
-          class="underline hover:no-underline hover:text-gray-600 transition"
+          class="footer-link"
           >Tailwind.css</a
         >
         and hosted on my
-        <NuxtLink
-          to="/home-network"
-          class="underline hover:no-underline hover:text-gray-600 transition"
-          >home network </NuxtLink
+        <NuxtLink to="/home-network" class="footer-link">home network </NuxtLink
         >. <br />
         The source code is available on
         <a
           href="https://github.com/Towerism/personal-site"
           target="_blank"
           rel="noopener noreferrer"
-          class="underline hover:no-underline hover:text-gray-600 transition"
+          class="footer-link"
           >Github</a
         >.
       </p>
@@ -41,3 +38,21 @@
     </div>
   </footer>
 </template>
+
+<style scoped>
+.footer {
+  @apply flex flex-col justify-center max-w-2xl mx-auto w-full mb-8;
+}
+
+.footer-top-hr {
+  @apply w-full border-gray-200 dark:border-gray-800 mb-8;
+}
+
+.footer-content-wrapper {
+  @apply container max-w-lg mx-auto text-center text-gray-700;
+}
+
+.footer-link {
+  @apply underline hover:no-underline hover:text-gray-600 transition;
+}
+</style>
