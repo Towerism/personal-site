@@ -37,6 +37,10 @@ defineProps<{
 const mobileNavOpen = ref(false);
 
 onBeforeRouteUpdate(() => {
+  updateScrollLock(false);
+});
+
+onBeforeRouteLeave(() => {
   mobileNavOpen.value = false;
 });
 
