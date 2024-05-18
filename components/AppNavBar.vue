@@ -25,7 +25,7 @@
 </template>
 
 <script setup lang="ts">
-import { onBeforeRouteLeave, type RouteLocationRaw } from "#vue-router";
+import { onBeforeRouteUpdate, type RouteLocationRaw } from "#vue-router";
 
 defineProps<{
   links: Array<{
@@ -36,17 +36,19 @@ defineProps<{
 
 const mobileNavOpen = ref(false);
 
-onBeforeRouteLeave(() => {
+onBeforeRouteUpdate(() => {
   mobileNavOpen.value = false;
 });
 
-watch(mobileNavOpen, (val) => {
+watch(mobileNavOpen, updateScrollLock);
+
+function updateScrollLock(val: boolean) {
   if (val) {
     document.body.classList.add("scroll-lock");
   } else {
     document.body.classList.remove("scroll-lock");
   }
-});
+}
 </script>
 
 <style scoped lang="scss">
