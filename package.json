@@ -5,7 +5,11 @@
     "build": "nuxt build",
     "dev": "nuxt dev",
     "generate": "nuxt generate",
-    "preview": "nuxt preview"
+    "preview": "nuxt preview",
+    "docker:build": "docker build -t personal-site .",
+    "docker:tag": "docker tag personal-site martinfjr/personal-site:latest",
+    "docker:push": "sudo docker push martinfjr/personal-site:latest",
+    "docker:deploy": "pnpm run docker:build && pnpm run docker:tag && pnpm run docker:push"
   },
   "dependencies": {
     "@nuxt/content": "^2.12.1",
