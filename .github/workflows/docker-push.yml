@@ -24,7 +24,7 @@ jobs:
         id: meta
         uses: docker/metadata-action@v5
         with:
-          images: ${{ env.IMAGE_NAME }}
+          images: martinfjr/personal-site
 
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
