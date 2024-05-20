@@ -1,5 +1,5 @@
 # Martin
 
-I'm a web developer and a tinkerer.
+I'm a web developer who enjoys tinkering with technology.
 
-Currently I find myself messing around self-hosting things on my home network. Things like AdGuard DNS, Vaultwarden password manager, etc. During the day I write code for Samsung. I work with a lot of different tech, but mainly I work with Vue.js, GraphQL, JavaScript, and TypeScript.
+My home network is my sandbox, where I play with cool stuff like dns, container management, personal finance management, and more. By day, I'm coding for Samsung, specializing in Vue.js, JavaScript, and TypeScript.
