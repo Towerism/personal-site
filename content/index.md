@@ -1,4 +1,4 @@
-# Martin
+# Martin 🐧
 
 I'm a web developer who enjoys tinkering with technology.
 
