@@ -1,7 +1,7 @@
 FROM node:22 as build
 WORKDIR /usr/src/app
 
-RUN npm install -g pnpm
+RUN npm install -g pnpm@9.1.1
 
 COPY package.json ./
 COPY pnpm-lock.yaml ./
@@ -10,7 +10,7 @@ COPY . .
 
 RUN pnpm build
 
-FROM --platform=linux/arm64 node:22-alpine
+FROM node:22-alpine
 COPY --from=build /usr/src/app/.output /app
 WORKDIR /app
 
