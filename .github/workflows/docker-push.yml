@@ -31,8 +31,8 @@ jobs:
           tags: |
             type=raw,value=latest,enable={{is_default_branch}}
             type=edge
-            type=ref,enable=true,prefix=,suffix=,event=tag
-            type=ref,enable=true,prefix=pr-,suffix=,event=pr
+            type=sha,prefix=commit-
+            type=ref,prefix=pr-,event=pr
 
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
