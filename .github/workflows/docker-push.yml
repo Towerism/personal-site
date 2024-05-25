@@ -7,11 +7,13 @@
 # To get a newer version, you will need to update the SHA.
 # You can also reference a tag or branch, but the action may change without warning.
 
-name: Publish Docker image
+name: Docker image
 
 on:
-  release:
-    types: [published]
+  push:
+    branches: ["main"]
+  pull_request:
+    branches: ["main"]
 
 jobs:
   docker:
@@ -25,6 +27,12 @@ jobs:
         uses: docker/metadata-action@v5
         with:
           images: martinfjr/personal-site
+          # generate Docker tags based on the following events/attributes
+          tags: |
+            type=raw,value=latest,enable={{is_default_branch}}
+            type=edge,priority=900,branch=$repo.default_branch
+            type=ref,enable=true,priority=600,prefix=,suffix=,event=tag
+            type=ref,enable=true,priority=600,prefix=pr-,suffix=,event=pr
 
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
@@ -42,7 +50,7 @@ jobs:
         uses: docker/build-push-action@v5
         with:
           context: .
+          push: ${{ github.event_name != 'pull_request' }}
           platforms: linux/amd64,linux/arm64
-          push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
