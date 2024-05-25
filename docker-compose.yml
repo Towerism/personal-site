@@ -3,6 +3,7 @@ services:
   personal-site:
     container_name: personal-site
     image: martinfjr/personal-site:latest
+    pull_policy: always
     restart: unless-stopped
     networks:
       - web-proxy-net
