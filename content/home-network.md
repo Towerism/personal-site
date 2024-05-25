@@ -28,7 +28,7 @@ Remote instance of VS Code accessible from the browser. I can easily connect to 
 
 ### Minecraft servers
 
-I am self-hosting 3 different Minecraft servers. One is just a proxy for the other two. The other two are a lobby where players funnel in through and a survival server. Eventually I might add more Minecraft servers, so that's why I am using this setup. These are all running on my old Gaming PC under one of my Proxmox VMs. I run two VMs total: one for the [Pterodactyl](#pterodactyl){class="link"} panel, and the other for the actual Minecraft servers.
+I am self-hosting 3 different [Minecraft servers](https://mc.martinfrackerjr.com){class="link" target="\_blank"}. One is just a proxy for the other two. The other two are a lobby where players funnel in through and a survival server. Eventually I might add more Minecraft servers, so that's why I am using this setup. These are all running on my old Gaming PC under one of my Proxmox VMs. I run two VMs total: one for the [Pterodactyl](#pterodactyl){class="link"} panel, and the other for the actual Minecraft servers.
 
 ### Personal website
 
