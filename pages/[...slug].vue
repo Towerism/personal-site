@@ -14,7 +14,11 @@
       class="flex flex-col justify-center max-w-2xl mx-auto bg-standard"
     >
       <div class="flex flex-col justify-center">
-        <ContentDoc />
+        <ContentDoc>
+          <template #not-found>
+            <AppPartial path="/_404" />
+          </template>
+        </ContentDoc>
       </div>
     </main>
   </div>
