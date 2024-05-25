@@ -1,0 +1,12 @@
+version: "3"
+services:
+  personal-site:
+    container_name: personal-site
+    image: martinfjr/personal-site:latest
+    restart: unless-stopped
+    networks:
+      - web-proxy-net
+
+networks:
+  web-proxy-net:
+    external: true
