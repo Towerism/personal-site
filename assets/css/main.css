@@ -71,3 +71,7 @@ ul {
   height: 100%;
   overflow: hidden;
 }
+
+.link {
+  @apply underline hover:no-underline hover:text-gray-600 transition;
+}

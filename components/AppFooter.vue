@@ -11,7 +11,7 @@
           href="https://v3.nuxtjs.org/"
           target="_blank"
           rel="noopener noreferrer"
-          class="footer-link"
+          class="link"
           >Nuxt 3</a
         >
         &amp;
@@ -19,18 +19,18 @@
           href="https://tailwindcss.com/"
           target="_blank"
           rel="noopener noreferrer"
-          class="footer-link"
+          class="link"
           >Tailwind.css</a
         >
         and hosted on my
-        <NuxtLink to="/home-network" class="footer-link">home network </NuxtLink
-        >. <br />
+        <NuxtLink to="/home-network" class="link">home network </NuxtLink>.
+        <br />
         The source code is available on
         <a
           href="https://github.com/Towerism/personal-site"
           target="_blank"
           rel="noopener noreferrer"
-          class="footer-link"
+          class="link"
           >Github</a
         >.
       </p>
@@ -50,9 +50,5 @@
 
 .footer-content-wrapper {
   @apply container max-w-lg mx-auto text-center text-gray-700;
-}
-
-.footer-link {
-  @apply underline hover:no-underline hover:text-gray-600 transition;
 }
 </style>
