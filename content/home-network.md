@@ -3,7 +3,7 @@
 This is what I am running and/or hosting on my home network. I plan on adding a NAS in the future. Unless otherwise mentioned, almost everything is ran on the Raspberry Pi. I'm hosting mainly Minecraft related stuff on an old gaming PC using Proxmox as a host for a couple Debian VMs.
 
 - Raspberry Pi 4 Model B 4GB
-- Old gaming PC (i7 3770K and 16GiB RAM) running Proxmox
+- Old gaming PC (i7 3770K and 32GiB RAM) running Proxmox
 - TP-Link AX4400 Wifi 6 Router
 
 ### Authentik
