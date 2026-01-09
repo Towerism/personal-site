@@ -3,7 +3,7 @@
     <hr class="footer-top-hr" />
     <div class="footer-content-wrapper">
       <p class="mb-3 font-semibold">
-        © 2024 Martin Fracker, Jr. All rights reserved.
+        © {{ copyrightYear }} Martin Fracker, Jr. All rights reserved.
       </p>
       <p class="text-sm text-gray-700">
         This website is built with
@@ -52,3 +52,7 @@
   @apply container max-w-lg mx-auto text-center text-gray-700;
 }
 </style>
+
+<script setup lang="ts">
+const copyrightYear = new Date().getFullYear()
+</script>
