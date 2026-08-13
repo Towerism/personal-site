@@ -1,25 +1,35 @@
 {
+  "name": "personal-site",
   "private": true,
   "type": "module",
+  "packageManager": "pnpm@11.21.0",
   "scripts": {
-    "build": "nuxt build",
     "dev": "nuxt dev",
+    "build": "nuxt build",
     "generate": "nuxt generate",
     "preview": "nuxt preview",
+    "postinstall": "nuxt prepare",
+    "typecheck": "nuxt typecheck",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
     "docker:build": "docker build -t personal-site .",
     "docker:tag": "docker tag personal-site martinfjr/personal-site:latest",
-    "docker:push": "sudo docker push martinfjr/personal-site:latest",
+    "docker:push": "docker push martinfjr/personal-site:latest",
     "docker:deploy": "pnpm run docker:build && pnpm run docker:tag && pnpm run docker:push"
   },
   "dependencies": {
-    "@nuxt/content": "^2.12.1",
-    "@nuxtjs/tailwindcss": "^6.12.0",
-    "@vueuse/core": "^10.9.0",
-    "nuxt": "^3.11.2",
-    "sass": "^1.77.2"
+    "@nuxt/content": "^3.15.2",
+    "@vueuse/core": "^14.4.0",
+    "@vueuse/nuxt": "^14.4.0",
+    "better-sqlite3": "^13.0.3",
+    "nuxt": "^4.5.2",
+    "vue": "^3.5.41"
   },
-  "packageManager": "pnpm@9.1.1+sha512.14e915759c11f77eac07faba4d019c193ec8637229e62ec99eefb7cf3c3b75c64447882b7c485142451ee3a6b408059cdfb7b7fa0341b975f12d0f7629c71195",
   "devDependencies": {
-    "prettier": "^3.2.5"
+    "@tailwindcss/vite": "^4.3.3",
+    "prettier": "^3.6.2",
+    "tailwindcss": "^4.3.3",
+    "typescript": "^5.9.3",
+    "vue-tsc": "^3.3.9"
   }
 }

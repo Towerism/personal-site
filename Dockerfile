@@ -1,16 +1,15 @@
-FROM node:22 as build
+FROM node:24 AS build
 WORKDIR /usr/src/app
 
-RUN npm install -g pnpm@9.1.1
+RUN corepack enable
 
-COPY package.json ./
-COPY pnpm-lock.yaml ./
-RUN pnpm install
+COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
+RUN pnpm install --frozen-lockfile
+
 COPY . .
-
 RUN pnpm build
 
-FROM node:22-alpine
+FROM node:24-alpine
 COPY --from=build /usr/src/app/.output /app
 WORKDIR /app
 

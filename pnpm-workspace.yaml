@@ -1,0 +1,11 @@
+# pnpm 11 reads its settings from here rather than .npmrc / package.json#pnpm.
+# https://pnpm.io/settings
+
+shamefullyHoist: true
+strictPeerDependencies: false
+
+# Native/postinstall builds must be opted into explicitly since pnpm 10.
+# better-sqlite3 backs the Nuxt Content v3 database.
+allowBuilds:
+  better-sqlite3: true
+  esbuild: true

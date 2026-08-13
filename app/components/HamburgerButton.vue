@@ -1,24 +1,25 @@
-<script setup>
-const activated = defineModel({ default: false });
+<script setup lang="ts">
+const activated = defineModel<boolean>({ default: false });
 </script>
 
 <template>
   <button
     class="burger visible md:hidden"
     aria-label="Toggle menu"
+    :aria-expanded="activated"
     type="button"
     @click="activated = !activated"
   >
     <svg
       :data-hide="activated"
-      class="h-5 w-5 absolute text-gray-900 dark:text-gray-100"
+      class="absolute h-5 w-5 text-gray-900 dark:text-gray-100"
       width="20"
       height="20"
       viewBox="0 0 20 20"
       stroke="currentColor"
-      strokewidth="1.5"
-      strokelinecap="round"
-      strokelinejoin="round"
+      stroke-width="1.5"
+      stroke-linecap="round"
+      stroke-linejoin="round"
       fill="none"
     >
       <path d="M2.5 7.5H17.5"></path>
@@ -26,16 +27,16 @@ const activated = defineModel({ default: false });
     </svg>
     <svg
       :data-hide="!activated"
-      class="h-5 w-5 absolute text-gray-900 dark:text-gray-100"
+      class="absolute h-5 w-5 text-gray-900 dark:text-gray-100"
       viewBox="0 0 24 24"
       width="24"
       height="24"
       stroke="currentColor"
-      strokewidth="1.5"
-      strokelinecap="round"
-      strokelinejoin="round"
+      stroke-width="1.5"
+      stroke-linecap="round"
+      stroke-linejoin="round"
       fill="none"
-      shaperendering="geometricPrecision"
+      shape-rendering="geometricPrecision"
     >
       <path d="M18 6L6 18"></path>
       <path d="M6 6l12 12"></path>

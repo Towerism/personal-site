@@ -1,3 +1,7 @@
+<script setup lang="ts">
+const copyrightYear = new Date().getFullYear();
+</script>
+
 <template>
   <footer class="footer">
     <hr class="footer-top-hr" />
@@ -8,11 +12,11 @@
       <p class="text-sm text-gray-700">
         This website is built with
         <a
-          href="https://v3.nuxtjs.org/"
+          href="https://nuxt.com/"
           target="_blank"
           rel="noopener noreferrer"
           class="link"
-          >Nuxt 3</a
+          >Nuxt 4</a
         >
         &amp;
         <a
@@ -34,25 +38,23 @@
           >Github</a
         >.
       </p>
-      <div class="inline-flex mt-6"></div>
+      <div class="mt-6 inline-flex"></div>
     </div>
   </footer>
 </template>
 
 <style scoped>
+@reference "../assets/css/main.css";
+
 .footer {
-  @apply flex flex-col justify-center max-w-2xl mx-auto w-full mb-8;
+  @apply mx-auto mb-8 flex w-full max-w-2xl flex-col justify-center;
 }
 
 .footer-top-hr {
-  @apply w-full border-gray-200 dark:border-gray-800 mb-8;
+  @apply mb-8 w-full border-gray-200 dark:border-gray-800;
 }
 
 .footer-content-wrapper {
-  @apply container max-w-lg mx-auto text-center text-gray-700;
+  @apply container mx-auto max-w-lg text-center text-gray-700;
 }
 </style>
-
-<script setup lang="ts">
-const copyrightYear = new Date().getFullYear()
-</script>

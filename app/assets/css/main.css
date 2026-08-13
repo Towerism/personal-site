@@ -1,0 +1,89 @@
+@import "tailwindcss";
+
+/* Markdown lives outside the app/ srcDir, so point Tailwind's source scanner at
+   it explicitly — content files use MDC attributes like {class="text-3xl"}. */
+@source "../../../content";
+
+/* Tailwind v3 `darkMode: "selector"` equivalent. */
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* Ported from the old tailwind.config.js `theme.extend`. In v4 `padding` and
+   `spacing` collapse into the single --spacing-* namespace, and token names are
+   kebab-case (p-section-x rather than the old p-section_x). */
+@theme {
+  --color-brand-primary: #124bcf;
+  --color-brand-secondary: #5eceeb;
+  --color-brand-secondary-saturated: #5eceeb;
+  --color-typography-primary: #000000;
+  --color-background: #ffffff;
+
+  --spacing-nav: 4rem;
+  --spacing-section-x: 5rem;
+  --spacing-section-x-sm: 1.5rem;
+  --spacing-section-y: 5rem;
+  --spacing-section-y-sm: 3rem;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body,
+.bg-standard {
+  @apply bg-gray-50 dark:bg-gray-900;
+}
+
+/* Headings */
+
+h1,
+h2,
+h3,
+h4,
+h5 {
+  @apply mb-4 font-bold tracking-tight text-black dark:text-white;
+}
+
+h1 {
+  @apply mb-6 text-3xl md:text-5xl;
+}
+
+h2 {
+  @apply text-2xl md:text-3xl;
+}
+
+h3 {
+  @apply text-xl;
+}
+
+h4 {
+  @apply text-lg;
+}
+
+h5 {
+  @apply text-base;
+}
+
+/* Body Text */
+
+p {
+  @apply mt-2 mb-8 text-base;
+}
+
+p,
+li {
+  @apply text-gray-600 dark:text-gray-400;
+}
+
+ul {
+  @apply mb-4;
+}
+
+.scroll-lock {
+  margin: 0;
+  height: 100%;
+  overflow: hidden;
+}
+
+.link {
+  @apply underline transition hover:text-gray-600 hover:no-underline;
+}
