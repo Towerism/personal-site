@@ -1,0 +1,21 @@
+services:
+  site:
+    build:
+      context: .
+      args:
+        SITE_URL: ${SITE_URL:-https://martinfrackerjr.com}
+    image: personal-site
+    # Caddy reaches the site as http://personal-site:8080 over web-proxy-net.
+    container_name: personal-site
+    restart: unless-stopped
+    networks:
+      - web-proxy-net
+    healthcheck:
+      test: ['CMD', 'wget', '-q', '--spider', 'http://127.0.0.1:8080/']
+      interval: 30s
+      timeout: 5s
+      retries: 3
+
+networks:
+  web-proxy-net:
+    external: true
