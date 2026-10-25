@@ -1,5 +1,6 @@
-# Build stage: run the tests, then build dist/ from content/.
-FROM node:22.23-alpine AS build
+# Build stage: run the tests, then build dist/ from content/. It runs on the
+# builder's own platform because dist/ is the same for every architecture.
+FROM --platform=$BUILDPLATFORM node:22.23-alpine AS build
 WORKDIR /app
 COPY package.json package-lock.json ./
 RUN npm ci
