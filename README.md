@@ -1,6 +1,6 @@
 # martinfrackerjr.com
 
-Personal site of Martin Fracker, Jr. One script (`build.mjs`) turns the Markdown in `content/` into static HTML in `dist/`. No framework; the only dependency is `marked`. Needs Node 22 or newer.
+Personal site of Martin Fracker, Jr. One script (`build.mjs`) turns the Markdown in `content/` into static HTML in `dist/`. No framework; the only dependency is `marked`. Needs Node 22 or newer (`.nvmrc` pins the major version).
 
 ## Edit content
 
@@ -55,7 +55,7 @@ Canonical and Open Graph URLs use `https://martinfrackerjr.com`; set `SITE_URL` 
 
 ## Deploy
 
-The `Dockerfile` runs the tests, builds the site with `node:22.23-alpine`, and copies `dist/` into a `caddy:2.11-alpine` image that runs as a non-root user. The `Caddyfile` sets the security headers (including a CSP that allows only same-origin scripts) and cache rules.
+The `Dockerfile` runs the tests, builds the site with `node:22.23-alpine`, and copies `dist/` into a `caddy:2.11-alpine` image that runs as a non-root user. CI builds the image for `linux/amd64` and `linux/arm64`. The `Caddyfile` sets the security headers (including a CSP that allows only same-origin scripts) and cache rules.
 
 ```sh
 docker build -t personal-site .
