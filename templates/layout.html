@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{{title}}</title>
+<meta name="description" content="{{description}}">
+<link rel="canonical" href="{{canonical}}">
+{{robots}}<meta name="color-scheme" content="dark light">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="{{siteName}}">
+<meta property="og:title" content="{{title}}">
+<meta property="og:description" content="{{description}}">
+<meta property="og:url" content="{{canonical}}">
+<meta property="og:image" content="{{ogImage}}">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="{{siteName}}: web developer and home-network tinkerer">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/css/site.css">
+<script src="/js/theme-init.js"></script>
+<script type="module" src="/js/main.js"></script>
+</head>
+<body class="page-{{page}}">
+<a class="skip-link" href="#main">Skip to content</a>
+<header class="site-header">
+<a class="site-name" href="/"><span class="site-mark" aria-hidden="true">mf</span><span class="site-title">{{siteName}}</span></a>
+<nav aria-label="Main">
+<ul>
+{{nav}}
+</ul>
+</nav>
+<button type="button" class="theme-toggle" aria-pressed="false"><span class="theme-toggle-track" aria-hidden="true"><span class="theme-toggle-knob"></span></span><span class="visually-hidden">Dark theme</span></button>
+</header>
+<main id="main">
+<p class="crumb" aria-hidden="true">{{crumb}}</p>
+{{content}}
+</main>
+<footer class="site-footer">
+<p>{{siteName}} · Written in Markdown, built by one small script. Code on <a href="https://github.com/Towerism" rel="noopener noreferrer">GitHub</a>.</p>
+<button type="button" class="motion-toggle" aria-pressed="false"><span class="motion-toggle-icon" aria-hidden="true"></span>Pause motion</button>
+</footer>
+</body>
+</html>

@@ -1,0 +1,59 @@
+{
+	admin off
+}
+
+# Security headers, imported by normal responses and by the 404 handler
+# (error responses do not keep headers set on the original route).
+(security) {
+	header {
+		Content-Security-Policy "default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'"
+		X-Content-Type-Options "nosniff"
+		X-Frame-Options "DENY"
+		Referrer-Policy "strict-origin-when-cross-origin"
+		Permissions-Policy "camera=(), microphone=(), geolocation=()"
+		Cross-Origin-Opener-Policy "same-origin"
+		-Server
+	}
+	# HSTS only on HTTPS, which Caddy serves only when SITE_ADDRESS is set.
+	# Behind a TLS-terminating proxy, that proxy sends HSTS. Each site block
+	# that imports this snippet defines @https.
+	header @https Strict-Transport-Security "max-age=31536000; includeSubDomains"
+}
+
+# Listens on :8080 by default; TLS is expected to end in front of the container.
+# Set SITE_ADDRESS (for example martinfrackerjr.com) to let Caddy manage HTTPS itself.
+{$SITE_ADDRESS::8080} {
+	root * /srv
+	encode zstd gzip
+
+	@https protocol https
+
+	import security
+
+	# Pages always revalidate so content edits show up at once.
+	@pages path / */ *.html
+	header @pages Cache-Control "no-cache"
+
+	# CSS and JS names carry a content hash (build.mjs), so a changed file gets
+	# a new name and the old one can be cached forever.
+	@hashed path_regexp \.[0-9a-f]{8}\.(css|js)$
+	header @hashed Cache-Control "public, max-age=31536000, immutable"
+
+	# Favicon and social image keep stable names (og.png is linked from other
+	# sites), so allow a week and serve stale while revalidating.
+	@assets path /favicon.svg /og.png
+	header @assets Cache-Control "public, max-age=604800, stale-while-revalidate=86400"
+
+	# Generated data changes with content.
+	@data path /assets/* /sitemap.xml /robots.txt
+	header @data Cache-Control "public, max-age=300"
+
+	file_server
+
+	handle_errors 404 {
+		import security
+		header Cache-Control "no-cache"
+		rewrite * /404.html
+		file_server
+	}
+}

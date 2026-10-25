@@ -1,0 +1,1094 @@
+@layer reset, tokens, base, layout, components, pages, motion;
+
+@layer reset {
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+  }
+  body,
+  h1,
+  h2,
+  h3,
+  p,
+  ul,
+  dl,
+  dd,
+  figure {
+    margin: 0;
+  }
+  img,
+  canvas {
+    display: block;
+    max-width: 100%;
+  }
+  button {
+    font: inherit;
+  }
+}
+
+/* Each colour token is light-dark(light value, dark value). The theme follows
+   the system unless theme-init.js sets data-theme from the toggle. */
+@layer tokens {
+  :root {
+    color-scheme: dark light;
+    --bg: light-dark(#f2f3f5, #09090d);
+    --surface: light-dark(#e4e6eb, #14151c);
+    --fg: light-dark(#0b0c10, #f2f2f5);
+    --muted: light-dark(#4f5260, #9b9cab);
+    --accent: light-dark(#3d6600, #c6ff3d);
+    --signal: light-dark(#b3361b, #ff7a59);
+    --line: light-dark(#cdd0d8, #262733);
+    /* The electric lime, used as a fill under dark ink in both themes. */
+    --volt: #c6ff3d;
+    --on-volt: #0b0c10;
+
+    --font-sans:
+      ui-sans-serif, system-ui, -apple-system, "Segoe UI Variable Display", "Segoe UI",
+      "Helvetica Neue", "Noto Sans", "Liberation Sans", sans-serif, "Apple Color Emoji",
+      "Segoe UI Emoji", "Noto Color Emoji";
+    --font-mono:
+      ui-monospace, "SF Mono", "Cascadia Code", "JetBrains Mono", Menlo, Consolas,
+      "Liberation Mono", monospace;
+
+    --step--1: clamp(0.78rem, 0.76rem + 0.1vw, 0.86rem);
+    --step-0: clamp(1rem, 0.96rem + 0.2vw, 1.125rem);
+    --step-1: clamp(1.15rem, 1.05rem + 0.5vw, 1.45rem);
+    --step-2: clamp(1.4rem, 1.15rem + 1.25vw, 2.25rem);
+    --step-3: clamp(1.9rem, 1.35rem + 2.75vw, 3.6rem);
+    --step-4: clamp(2.6rem, 1.3rem + 6.5vw, 7rem);
+    --step-5: clamp(3.1rem, 0.9rem + 10.5vw, 11rem);
+
+    --gutter: clamp(1rem, 4vw, 3rem);
+    --wrap: 84rem;
+    --space: clamp(1.5rem, 1rem + 2.5vw, 3.5rem);
+    --measure: 62ch;
+    --radius: 1rem;
+    --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  :root[data-theme="light"] {
+    color-scheme: light;
+  }
+  :root[data-theme="dark"] {
+    color-scheme: dark;
+  }
+}
+
+@layer base {
+  html {
+    -webkit-text-size-adjust: 100%;
+    scrollbar-color: var(--line) var(--bg);
+  }
+  body {
+    min-height: 100dvh;
+    display: flex;
+    flex-direction: column;
+    overflow-x: clip;
+    color: var(--fg);
+    font: var(--step-0) / 1.6 var(--font-sans);
+    background:
+      radial-gradient(
+        56rem 36rem at 88% -12%,
+        color-mix(in oklab, var(--volt) 14%, transparent),
+        transparent 70%
+      ),
+      radial-gradient(
+        36rem 28rem at -8% 38%,
+        color-mix(in oklab, var(--signal) 7%, transparent),
+        transparent 70%
+      ),
+      var(--bg);
+    background-repeat: no-repeat;
+    -webkit-font-smoothing: antialiased;
+  }
+  /* Faint dot grid, fading out down the first screen. */
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    background-image: radial-gradient(
+      color-mix(in oklab, var(--fg) 16%, transparent) 1px,
+      transparent 1.5px
+    );
+    background-size: 28px 28px;
+    mask-image: linear-gradient(to bottom, #000, transparent 75vh);
+  }
+  ::selection {
+    background: var(--volt);
+    color: var(--on-volt);
+  }
+
+  h1,
+  h2,
+  h3 {
+    font-weight: 800;
+    text-wrap: balance;
+  }
+  h1 {
+    font-size: var(--step-4);
+    line-height: 0.95;
+    letter-spacing: -0.045em;
+    margin-block-end: 0.35em;
+  }
+  h2 {
+    font-size: var(--step-3);
+    line-height: 1.02;
+    letter-spacing: -0.035em;
+    margin-block: 1.6em 0.5em;
+  }
+  h2::before {
+    content: "##" / "";
+    display: block;
+    margin-block-end: 0.5rem;
+    font: 600 var(--step--1) / 1 var(--font-mono);
+    letter-spacing: 0;
+    color: var(--accent);
+  }
+  h3 {
+    font-size: var(--step-1);
+    line-height: 1.2;
+    letter-spacing: -0.02em;
+    margin-block-end: 0.5em;
+  }
+  p,
+  ul {
+    margin-block-end: 1em;
+    text-wrap: pretty;
+  }
+
+  a {
+    color: inherit;
+    text-decoration: underline 0.1em var(--accent);
+    text-underline-offset: 0.22em;
+    background: linear-gradient(var(--volt), var(--volt)) no-repeat 0 100% / 0 100%;
+    border-radius: 0.15em;
+  }
+  a:hover {
+    color: var(--on-volt);
+    background-size: 100% 100%;
+    text-decoration-color: transparent;
+  }
+  :focus-visible {
+    outline: 3px solid var(--accent);
+    outline-offset: 3px;
+    border-radius: 4px;
+  }
+}
+
+@layer layout {
+  .site-header,
+  main,
+  .site-footer {
+    width: 100%;
+    padding-inline: max(var(--gutter), (100% - var(--wrap)) / 2);
+  }
+  .site-header {
+    position: relative;
+    z-index: 10;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    grid-template-areas: "brand toggle" "nav nav";
+    align-items: center;
+    gap: 0.25rem 1.5rem;
+    padding-block: 0.6rem;
+    background: color-mix(in oklab, var(--bg) 78%, transparent);
+    backdrop-filter: blur(14px) saturate(1.4);
+    border-block-end: 1px solid color-mix(in oklab, var(--line) 70%, transparent);
+  }
+  .site-name {
+    grid-area: brand;
+  }
+  .site-header nav {
+    grid-area: nav;
+  }
+  .theme-toggle {
+    grid-area: toggle;
+  }
+  @media (min-width: 46rem) {
+    .site-header {
+      position: sticky;
+      top: 0;
+      grid-template-columns: auto 1fr auto;
+      grid-template-areas: "brand nav toggle";
+    }
+    [id] {
+      scroll-margin-block-start: 6rem;
+    }
+    .site-header nav {
+      justify-self: end;
+    }
+  }
+  main {
+    flex: 1;
+    padding-block: var(--space) calc(var(--space) * 2);
+  }
+  main > :is(p, ul, h2, h3) {
+    max-width: var(--measure);
+  }
+  main > h1 {
+    max-width: 16ch;
+  }
+  .site-footer {
+    padding-block: 1.5rem 2rem;
+    border-block-start: 1px solid var(--line);
+    color: var(--muted);
+    font: var(--step--1) / 1.6 var(--font-mono);
+  }
+  .site-footer {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem 1.5rem;
+  }
+  .site-footer p {
+    margin: 0;
+  }
+}
+
+@layer components {
+  .visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+  .skip-link {
+    position: absolute;
+    z-index: 20;
+    inset-inline-start: 1rem;
+    inset-block-start: -10rem;
+    padding: 0.6rem 1rem;
+    background: var(--volt);
+    color: var(--on-volt);
+    font-weight: 700;
+    text-decoration: none;
+  }
+  .skip-link:focus {
+    inset-block-start: 1rem;
+  }
+
+  /* Brand: a lime monogram tile and the name. */
+  .site-name {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.65rem;
+    justify-self: start;
+    min-height: 2.75rem;
+    font-weight: 750;
+    letter-spacing: -0.02em;
+    text-decoration: none;
+    background: none;
+  }
+  .site-name:hover {
+    color: inherit;
+  }
+  .site-mark {
+    display: grid;
+    place-items: center;
+    width: 2.1rem;
+    aspect-ratio: 1;
+    border-radius: 0.55rem;
+    background: var(--volt);
+    color: var(--on-volt);
+    font: 800 0.95rem / 1 var(--font-mono);
+    letter-spacing: -0.06em;
+    box-shadow: 0 0 0 1px color-mix(in oklab, var(--on-volt) 20%, transparent) inset;
+  }
+  .site-name:hover .site-mark {
+    rotate: -8deg;
+  }
+
+  .site-header ul {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.25rem;
+    padding: 0;
+    margin: 0;
+    list-style: none;
+    counter-reset: nav;
+  }
+  .site-header nav a {
+    counter-increment: nav;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45em;
+    min-height: 2.75rem;
+    padding: 0 0.7rem;
+    border-radius: 999px;
+    font: 500 var(--step--1) / 1 var(--font-mono);
+    text-transform: lowercase;
+    text-decoration: none;
+    color: var(--muted);
+  }
+  .site-header nav a::before {
+    content: counter(nav, decimal-leading-zero) / "";
+    color: var(--accent);
+    font-size: 0.85em;
+  }
+  .site-header nav a:hover {
+    color: var(--on-volt);
+  }
+  .site-header nav a:hover::before {
+    color: inherit;
+  }
+  .site-header nav [aria-current="page"] {
+    color: var(--fg);
+    box-shadow: 0 0 0 1px var(--line) inset;
+  }
+
+  /* Theme toggle: a switch whose knob is a sun (light) or a moon (dark). */
+  .theme-toggle {
+    display: none;
+  }
+  .js .theme-toggle {
+    display: inline-grid;
+    place-items: center;
+    min-width: 2.75rem;
+    min-height: 2.75rem;
+    padding: 0;
+    color: var(--fg);
+    background: none;
+    border: 0;
+    border-radius: 999px;
+    cursor: pointer;
+  }
+  .theme-toggle-track {
+    position: relative;
+    display: block;
+    width: 3.4rem;
+    height: 1.9rem;
+    border-radius: 999px;
+    background: var(--surface);
+    box-shadow:
+      0 0 0 1px var(--line) inset,
+      0 2px 6px -2px color-mix(in oklab, #000 40%, transparent) inset;
+  }
+  .theme-toggle-knob {
+    position: absolute;
+    inset-block-start: 0.25rem;
+    inset-inline-start: 0.25rem;
+    width: 1.4rem;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    background: var(--signal);
+    box-shadow: 0 0 0 0.2rem color-mix(in oklab, var(--signal) 25%, transparent);
+  }
+  .theme-toggle[aria-pressed="true"] .theme-toggle-knob {
+    translate: 1.5rem 0;
+    background: transparent;
+    box-shadow: inset 0.42rem -0.22rem 0 0 var(--volt);
+  }
+  .theme-toggle:hover .theme-toggle-track {
+    box-shadow: 0 0 0 1px var(--accent) inset;
+  }
+
+  /* Motion toggle: a pill whose icon is pause bars, or a play triangle once pressed. */
+  .motion-toggle {
+    display: none;
+  }
+  .js .motion-toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6em;
+    min-height: 2.75rem;
+    padding: 0 1rem;
+    font: 500 var(--step--1) / 1 var(--font-mono);
+    text-transform: lowercase;
+    color: var(--fg);
+    background: none;
+    border: 0;
+    border-radius: 999px;
+    box-shadow: 0 0 0 1px var(--line) inset;
+    cursor: pointer;
+  }
+  .motion-toggle:hover {
+    box-shadow: 0 0 0 1px var(--accent) inset;
+  }
+  .motion-toggle[aria-pressed="true"] {
+    color: var(--on-volt);
+    background: var(--volt);
+    box-shadow: none;
+  }
+  .motion-toggle-icon {
+    width: 0.7em;
+    height: 0.85em;
+    border-inline: 0.22em solid var(--accent);
+  }
+  .motion-toggle[aria-pressed="true"] .motion-toggle-icon {
+    border: 0;
+    background: currentColor;
+    clip-path: polygon(0 0, 100% 50%, 0 100%);
+  }
+
+  .crumb {
+    margin-block-end: 1.25rem;
+    font: 500 var(--step--1) / 1 var(--font-mono);
+    color: var(--muted);
+  }
+  .crumb::before {
+    content: "$ cd " / "";
+    color: var(--signal);
+  }
+  .crumb::after {
+    content: "" / "";
+    display: inline-block;
+    width: 0.55em;
+    height: 1.1em;
+    margin-inline-start: 0.2em;
+    vertical-align: -0.2em;
+    background: var(--accent);
+  }
+
+  /* Hero: an oversized headline, the intro, and the status board. */
+  .hero h1 {
+    font-size: var(--step-5);
+    line-height: 0.88;
+    letter-spacing: -0.055em;
+    max-width: none;
+    margin-block-end: clamp(1.5rem, 4vw, 3rem);
+  }
+  .hero-body {
+    display: grid;
+    gap: clamp(2rem, 5vw, 4rem);
+    align-items: start;
+  }
+  @media (min-width: 62rem) {
+    .hero-body {
+      grid-template-columns: minmax(0, 1.15fr) minmax(22rem, 0.85fr);
+    }
+  }
+  .hero-intro > p:first-child {
+    font-size: var(--step-2);
+    line-height: 1.2;
+    font-weight: 650;
+    letter-spacing: -0.025em;
+    max-width: 24ch;
+  }
+  .hero-intro > p {
+    max-width: 54ch;
+  }
+  .hero-intro > p + p {
+    color: var(--muted);
+  }
+  .hero-intro > p + p a {
+    color: var(--fg);
+  }
+  .hero-intro > p + p a:hover {
+    color: var(--on-volt);
+  }
+
+  .status {
+    position: relative;
+    border-radius: var(--radius);
+    background: color-mix(in oklab, var(--surface) 88%, transparent);
+    box-shadow:
+      0 0 0 1px var(--line) inset,
+      0 1px 0 0 color-mix(in oklab, var(--fg) 8%, transparent) inset,
+      0 2.5rem 5rem -2.5rem color-mix(in oklab, var(--volt) 30%, transparent);
+    font: var(--step--1) / 1.5 var(--font-mono);
+    overflow: hidden;
+  }
+  .status-head {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    margin: 0;
+    padding: 0.85rem 1.1rem;
+    border-block-end: 1px solid var(--line);
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+  }
+  .status-led {
+    width: 0.55rem;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    background: var(--accent);
+    box-shadow: 0 0 0.6rem var(--accent);
+  }
+  .ticker {
+    margin: 0;
+    padding: 0.75rem 0;
+    list-style: none;
+  }
+  .ticker li {
+    padding: 0.3rem 1.1rem;
+    color: var(--fg);
+  }
+  .ticker li::before {
+    content: "›" / "";
+    margin-inline-end: 0.6em;
+    color: var(--muted);
+  }
+  .ticker-source {
+    color: var(--accent);
+  }
+  .ticker-source::after {
+    content: ":" / "";
+  }
+  /* With the ticker running, the board shows the newest few lines like a log. */
+  .ticker.is-live {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    height: calc(5 * 2.1em + 1.5rem);
+    overflow: hidden;
+    mask-image: linear-gradient(to bottom, transparent, #000 45%);
+  }
+  .ticker.is-live li {
+    flex: none;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .ticker.is-live li:last-child::after {
+    content: "" / "";
+    display: inline-block;
+    width: 0.55em;
+    height: 1.05em;
+    margin-inline-start: 0.25em;
+    vertical-align: -0.18em;
+    background: var(--accent);
+  }
+  .status-stats {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    border-block-start: 1px solid var(--line);
+  }
+  .status-stats > div {
+    padding: 0.9rem 1.1rem;
+  }
+  .status-stats > div + div {
+    border-inline-start: 1px solid var(--line);
+  }
+  .status-stats dt {
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    font-size: 0.85em;
+  }
+  .status-stats dd {
+    font: 800 var(--step-2) / 1.1 var(--font-sans);
+    letter-spacing: -0.03em;
+    font-variant-numeric: tabular-nums;
+  }
+  .status-uptime {
+    color: var(--signal);
+  }
+
+  /* The graph: a framed screen with the canvas; the legend is its text equivalent. */
+  .graph {
+    margin-block: calc(var(--space) * 1.5) 0;
+  }
+  .graph-stage {
+    display: none;
+  }
+  .js .graph-stage {
+    display: block;
+    position: relative;
+    aspect-ratio: 4 / 5;
+    border-radius: calc(var(--radius) * 1.5);
+    background:
+      radial-gradient(
+        ellipse at 50% 46%,
+        color-mix(in oklab, var(--volt) 10%, transparent),
+        transparent 65%
+      ),
+      linear-gradient(color-mix(in oklab, var(--line) 45%, transparent) 1px, transparent 1px) 0 0 /
+        100% 3rem,
+      linear-gradient(90deg, color-mix(in oklab, var(--line) 45%, transparent) 1px, transparent 1px)
+        0 0 / 3rem 100%,
+      var(--surface);
+    box-shadow: 0 0 0 1px var(--line) inset;
+    color: var(--fg);
+    overflow: hidden;
+  }
+  @media (min-width: 40rem) {
+    .js .graph-stage {
+      aspect-ratio: 16 / 10;
+    }
+  }
+  @media (min-width: 70rem) {
+    .js .graph-stage {
+      aspect-ratio: 21 / 10;
+    }
+  }
+  .graph-canvas {
+    display: block;
+    width: 100%;
+    height: 100%;
+    color: var(--accent);
+    touch-action: pan-y;
+  }
+  .graph-canvas.is-pointing {
+    cursor: pointer;
+  }
+  .graph-readout {
+    position: absolute;
+    inset-inline: 1rem;
+    inset-block-end: 1rem;
+    max-width: 38rem;
+    margin: 0;
+    padding: 0.7rem 0.9rem;
+    border-radius: 0.6rem;
+    background: color-mix(in oklab, var(--bg) 82%, transparent);
+    backdrop-filter: blur(8px);
+    box-shadow: 0 0 0 1px var(--line) inset;
+    font: var(--step--1) / 1.45 var(--font-mono);
+    color: var(--muted);
+    pointer-events: none;
+  }
+  .graph-readout:empty {
+    display: none;
+  }
+  .graph-readout strong {
+    color: var(--accent);
+    font-weight: 600;
+  }
+  .graph figcaption {
+    margin-block-start: 1.25rem;
+    color: var(--muted);
+  }
+  .graph figcaption > p {
+    max-width: var(--measure);
+  }
+  .graph-legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    padding: 0;
+    list-style: none;
+  }
+  .graph-legend a {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5em;
+    min-height: 2.5rem;
+    padding: 0 0.9rem;
+    border-radius: 999px;
+    font: 500 var(--step--1) / 1 var(--font-mono);
+    color: var(--fg);
+    text-decoration: none;
+    box-shadow: 0 0 0 1px var(--line) inset;
+  }
+  .graph-legend a::before {
+    content: "" / "";
+    width: 0.45rem;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    background: var(--muted);
+  }
+  .graph-legend a:is(:hover, :focus-visible, .is-active) {
+    color: var(--on-volt);
+    background: var(--volt);
+    box-shadow: none;
+  }
+  .graph-legend a:is(:hover, :focus-visible, .is-active)::before {
+    background: var(--on-volt);
+  }
+
+  /* Service cards: numbered panels with a status LED and a pointer spotlight. */
+  .cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 19rem), 1fr));
+    gap: 1rem;
+    margin-block: 1.5rem 3rem;
+    counter-reset: card;
+  }
+  .card {
+    counter-increment: card;
+    position: relative;
+    isolation: isolate;
+    padding: 1.4rem 1.4rem 1.2rem;
+    border-radius: var(--radius);
+    background: var(--surface);
+    box-shadow: 0 0 0 1px var(--line) inset;
+    overflow: hidden;
+  }
+  .card::before {
+    content: counter(card, decimal-leading-zero) / "";
+    display: block;
+    margin-block-end: 1.6rem;
+    font: 500 var(--step--1) / 1 var(--font-mono);
+    color: var(--muted);
+  }
+  .card::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background:
+      radial-gradient(
+        circle at calc(100% - 1.6rem) 1.75rem,
+        var(--accent) 0.2rem,
+        color-mix(in oklab, var(--accent) 35%, transparent) 0.3rem,
+        transparent 0.75rem
+      ),
+      radial-gradient(
+        22rem circle at var(--mx, 50%) var(--my, -30%),
+        color-mix(in oklab, var(--accent) 12%, transparent),
+        transparent 60%
+      );
+  }
+  .card:hover {
+    box-shadow: 0 0 0 1px color-mix(in oklab, var(--accent) 60%, var(--line)) inset;
+  }
+  .card h3 {
+    font-size: var(--step-2);
+    letter-spacing: -0.035em;
+  }
+  .card p {
+    color: var(--muted);
+    font-size: 0.95em;
+  }
+  .card p:last-child {
+    margin-block-end: 0;
+  }
+  .card a {
+    color: var(--fg);
+  }
+  .card a:hover {
+    color: var(--on-volt);
+  }
+}
+
+@layer pages {
+  /* About: a lead paragraph; on wide screens the heading gets its own column. */
+  .page-about main > h1 + p {
+    font-size: clamp(1.2rem, 1.02rem + 0.85vw, 1.7rem);
+    line-height: 1.45;
+    font-weight: 550;
+    letter-spacing: -0.015em;
+    max-width: 44ch;
+  }
+  .page-about main > h1 + p ~ p {
+    font-size: var(--step-1);
+    color: var(--muted);
+    max-width: 48ch;
+  }
+  @media (min-width: 62rem) {
+    .page-about main {
+      display: grid;
+      grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+      column-gap: clamp(2rem, 5vw, 5rem);
+      align-content: start;
+    }
+    .page-about main > * {
+      grid-column: 2;
+    }
+    .page-about main > .crumb {
+      grid-column: 1 / -1;
+    }
+    .page-about main > h1 {
+      grid-column: 1;
+      grid-row: 2 / span 20;
+      align-self: start;
+    }
+    .page-about main > h1 + p {
+      padding-block-start: 0.6em;
+    }
+  }
+
+  /* Home network: the hardware list as a spec sheet. */
+  .page-home-network main > h1 + p {
+    font-size: var(--step-1);
+    line-height: 1.45;
+    max-width: 52ch;
+  }
+  .page-home-network main > ul {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 24rem), 1fr));
+    gap: 0 2rem;
+    max-width: none;
+    padding: 0;
+    list-style: none;
+    counter-reset: hw;
+  }
+  .page-home-network main > ul li {
+    counter-increment: hw;
+    display: grid;
+    grid-template-columns: 3.2rem 1fr;
+    padding-block: 0.85rem;
+    border-block-start: 1px solid var(--line);
+  }
+  .page-home-network main > ul li::before {
+    content: "hw" counter(hw, decimal-leading-zero) / "";
+    padding-block-start: 0.2em;
+    font: 500 var(--step--1) / 1.4 var(--font-mono);
+    color: var(--accent);
+  }
+
+  /* 404: a giant outlined number drifting behind the copy. */
+  .page-404 main {
+    position: relative;
+    isolation: isolate;
+    overflow: clip;
+  }
+  .page-404 main::before {
+    content: "404" / "";
+    position: absolute;
+    z-index: -1;
+    inset-inline-end: max(var(--gutter), (100% - var(--wrap)) / 2);
+    inset-block-start: 50%;
+    translate: 0 -50%;
+    font: 900 clamp(9rem, 38vw, 30rem) / 0.8 var(--font-sans);
+    letter-spacing: -0.07em;
+    color: transparent;
+    -webkit-text-stroke: 2px color-mix(in oklab, var(--signal) 55%, transparent);
+    pointer-events: none;
+  }
+  @media (max-width: 46rem) {
+    .page-404 main::before {
+      inset-block: auto var(--space);
+      translate: 0 0;
+    }
+    .page-404 main {
+      padding-block-end: clamp(9rem, 45vw, 16rem);
+    }
+  }
+  .page-404 main > h1 {
+    max-width: 13ch;
+  }
+  .page-404 main > p:last-child a {
+    font-weight: 700;
+  }
+}
+
+/* Alive effects: only with JS on and motion allowed. Without either, every
+   element stays visible and still. */
+@layer motion {
+  @media (prefers-reduced-motion: no-preference) {
+    /* @view-transition cannot be scoped to the js class: it is an at-rule, not a
+       selector. That is acceptable: a page cross-fade runs once per navigation,
+       is not endless motion, and works without JS. */
+    @view-transition {
+      navigation: auto;
+    }
+    .site-header {
+      view-transition-name: site-header;
+    }
+    .theme-swap .site-header {
+      view-transition-name: none;
+    }
+    ::view-transition-old(root) {
+      animation: page-out 220ms ease-in both;
+    }
+    ::view-transition-new(root) {
+      animation: page-in 520ms var(--ease-out) both;
+    }
+    @keyframes page-out {
+      to {
+        opacity: 0;
+        translate: 0 -0.75rem;
+      }
+    }
+    @keyframes page-in {
+      from {
+        opacity: 0;
+        translate: 0 1.25rem;
+      }
+    }
+
+    /* Theme switch: the new theme spreads in a circle from the toggle
+       (main.js sets --swap-x/--swap-y to the toggle's centre). */
+    .js.theme-swap::view-transition-old(root) {
+      animation: none;
+    }
+    .js.theme-swap::view-transition-new(root) {
+      animation: theme-in 650ms cubic-bezier(0.65, 0, 0.2, 1) both;
+    }
+    @keyframes theme-in {
+      from {
+        clip-path: circle(0 at var(--swap-x, 100%) var(--swap-y, 0));
+      }
+      to {
+        clip-path: circle(150vmax at var(--swap-x, 100%) var(--swap-y, 0));
+      }
+    }
+    .theme-toggle-knob {
+      transition:
+        translate 420ms var(--ease-out),
+        background-color 300ms,
+        box-shadow 420ms var(--ease-out);
+    }
+
+    a {
+      transition:
+        background-size 260ms var(--ease-out),
+        color 200ms,
+        text-decoration-color 200ms;
+    }
+    .site-mark {
+      transition: rotate 300ms var(--ease-out);
+    }
+    .site-header nav a,
+    .graph-legend a {
+      transition:
+        background-size 260ms var(--ease-out),
+        color 160ms,
+        background-color 160ms;
+    }
+
+    .js .crumb::after,
+    .js .ticker.is-live li:last-child::after {
+      animation: blink 1.1s steps(1) infinite;
+    }
+    @keyframes blink {
+      50% {
+        opacity: 0;
+      }
+    }
+
+    .js .status-led {
+      animation: led 2.4s ease-in-out infinite;
+    }
+    @keyframes led {
+      50% {
+        box-shadow: 0 0 1.4rem var(--accent);
+        opacity: 0.6;
+      }
+    }
+
+    /* Ticker: the newest line types itself in. */
+    .js .ticker.is-live li:last-child {
+      animation: type-in 900ms steps(32, end) both;
+    }
+    @keyframes type-in {
+      from {
+        clip-path: inset(0 100% 0 0);
+      }
+    }
+
+    /* Kinetic headline: main.js wraps each word; words rise into place. */
+    .js .split-word {
+      display: inline-block;
+      overflow: clip;
+      overflow-clip-margin: 0.14em;
+      vertical-align: top;
+    }
+    .js .split-word > span {
+      display: inline-block;
+      animation: rise 900ms var(--ease-out) both;
+      animation-delay: calc(80ms + var(--i, 0) * 70ms);
+    }
+    @keyframes rise {
+      from {
+        translate: 0 108%;
+        rotate: 6deg;
+      }
+    }
+    .js .split-word.is-pictograph {
+      overflow: visible;
+    }
+    .js .split-word.is-pictograph > span {
+      animation:
+        pop 700ms cubic-bezier(0.3, 1.6, 0.5, 1) both,
+        waddle 1.4s ease-in-out 2;
+      animation-delay: calc(200ms + var(--i, 0) * 70ms), calc(1300ms + var(--i, 0) * 70ms);
+      transform-origin: 50% 90%;
+    }
+    .js .split-word.is-pictograph:hover > span {
+      animation: waddle 900ms ease-in-out;
+    }
+    @keyframes pop {
+      from {
+        scale: 0;
+        rotate: -30deg;
+      }
+    }
+    @keyframes waddle {
+      0%,
+      100% {
+        rotate: 0deg;
+      }
+      20% {
+        rotate: -14deg;
+      }
+      40% {
+        rotate: 12deg;
+      }
+      60% {
+        rotate: -8deg;
+      }
+      80% {
+        rotate: 5deg;
+      }
+    }
+
+    /* Service cards tilt towards the pointer (main.js sets --tilt-x/--tilt-y). */
+    @media (hover: hover) and (pointer: fine) {
+      .js .card {
+        transform: perspective(900px) rotateX(var(--tilt-y, 0deg)) rotateY(var(--tilt-x, 0deg));
+        transition:
+          transform 500ms var(--ease-out),
+          box-shadow 200ms;
+      }
+      .js .card.is-tilting {
+        transition:
+          transform 120ms linear,
+          box-shadow 200ms;
+      }
+    }
+
+    .js .page-404 main::before {
+      animation: drift 9s ease-in-out infinite alternate;
+    }
+    @keyframes drift {
+      to {
+        transform: translate(-3%, 4%) rotate(-4deg);
+      }
+    }
+
+    @supports (animation-timeline: view()) {
+      .js .reveal {
+        animation: reveal linear both;
+        animation-timeline: view();
+        animation-range: entry 0% entry 45%;
+      }
+    }
+    @keyframes reveal {
+      from {
+        opacity: 0;
+        translate: 0 2rem;
+        scale: 0.98;
+      }
+    }
+
+    /* Motion toggle pressed: endless animation freezes where it is; entrance
+       animations and the page cross-fade are dropped so no content stays
+       hidden part-way through. */
+    .js.motion-paused *,
+    .js.motion-paused *::before,
+    .js.motion-paused *::after {
+      animation-play-state: paused !important;
+    }
+    .js.motion-paused .split-word > span,
+    .js.motion-paused .reveal,
+    .js.motion-paused .ticker.is-live li:last-child,
+    .js.motion-paused::view-transition-old(root),
+    .js.motion-paused::view-transition-new(root) {
+      animation: none !important;
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation: none !important;
+      transition: none !important;
+      scroll-behavior: auto !important;
+    }
+    .js .graph-stage {
+      display: none;
+    }
+    /* Nothing moves, so there is nothing to pause. */
+    .js .motion-toggle {
+      display: none;
+    }
+  }
+}
