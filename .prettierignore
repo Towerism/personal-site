@@ -1,0 +1,7 @@
+dist/
+node_modules/
+.omc/
+content/
+templates/
+package-lock.json
+*.md
