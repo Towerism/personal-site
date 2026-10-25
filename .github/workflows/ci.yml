@@ -72,8 +72,9 @@ jobs:
           IMAGE: ghcr.io/${{ github.repository }}
           DIGEST: ${{ steps.build.outputs.digest }}
         run: |
-          platforms=$(docker buildx imagetools inspect "$IMAGE@$DIGEST" --format '{{range .Manifest.Manifests}}{{if .Platform}}{{.Platform.OS}}/{{.Platform.Architecture}} {{end}}{{end}}')
+          image=${IMAGE,,}
+          platforms=$(docker buildx imagetools inspect "$image@$DIGEST" --format '{{range .Manifest.Manifests}}{{if .Platform}}{{.Platform.OS}}/{{.Platform.Architecture}} {{end}}{{end}}')
           echo "published platforms: $platforms"
           for p in linux/amd64 linux/arm64; do
-            case " $platforms " in *" $p "*) ;; *) echo "::error::missing $p in $IMAGE@$DIGEST"; exit 1 ;; esac
+            case " $platforms " in *" $p "*) ;; *) echo "::error::missing $p in $image@$DIGEST"; exit 1 ;; esac
           done
