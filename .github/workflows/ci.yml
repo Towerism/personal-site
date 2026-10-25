@@ -55,7 +55,8 @@ jobs:
             type=semver,pattern={{version}}
             type=semver,pattern={{major}}.{{minor}}
             type=semver,pattern={{major}}
-      - uses: docker/build-push-action@v6
+      - id: build
+        uses: docker/build-push-action@v6
         with:
           context: .
           platforms: linux/amd64,linux/arm64
@@ -64,3 +65,15 @@ jobs:
           labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
+      # The pushed index must list both platforms, or a Raspberry Pi pull fails with "no matching manifest".
+      - name: Check published platforms
+        if: env.PUSH == 'true'
+        env:
+          IMAGE: ghcr.io/${{ github.repository }}
+          DIGEST: ${{ steps.build.outputs.digest }}
+        run: |
+          platforms=$(docker buildx imagetools inspect "$IMAGE@$DIGEST" --format '{{range .Manifest.Manifests}}{{if .Platform}}{{.Platform.OS}}/{{.Platform.Architecture}} {{end}}{{end}}')
+          echo "published platforms: $platforms"
+          for p in linux/amd64 linux/arm64; do
+            case " $platforms " in *" $p "*) ;; *) echo "::error::missing $p in $IMAGE@$DIGEST"; exit 1 ;; esac
+          done
