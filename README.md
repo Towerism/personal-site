@@ -62,6 +62,8 @@ docker build -t personal-site .
 docker run -p 8080:8080 personal-site
 ```
 
+`docker-compose.yml` builds the same image and publishes it on `PORT` (default 8080). Portainer deploys the stack from this repository: edit `docker-compose.yml` in git, then pull from the stack page to update it. Set `SITE_URL` in the stack's environment to build for another address.
+
 Caddy listens on port 8080 and expects TLS to end in front of it; the proxy that ends TLS should send HSTS. To have Caddy manage HTTPS itself, run it with `-e SITE_ADDRESS=martinfrackerjr.com` and publish ports 80 and 443 (the Caddy binary may bind them without root). Caddy then sends HSTS on its HTTPS responses.
 
 ## Layout

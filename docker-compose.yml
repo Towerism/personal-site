@@ -1,0 +1,15 @@
+services:
+  site:
+    build:
+      context: .
+      args:
+        SITE_URL: ${SITE_URL:-https://martinfrackerjr.com}
+    image: personal-site
+    restart: unless-stopped
+    ports:
+      - '${PORT:-8080}:8080'
+    healthcheck:
+      test: ['CMD', 'wget', '-q', '--spider', 'http://127.0.0.1:8080/']
+      interval: 30s
+      timeout: 5s
+      retries: 3
