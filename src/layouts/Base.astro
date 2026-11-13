@@ -1,0 +1,72 @@
+---
+import '@fontsource-variable/archivo/wdth.css';
+import '@fontsource/ibm-plex-mono/400.css';
+import '@fontsource/ibm-plex-mono/500.css';
+import '../styles/site.css';
+
+interface Props {
+  title: string;
+  description: string;
+  page: string;
+  canonical?: boolean;
+}
+
+const { title, description, page, canonical = true } = Astro.props;
+const owner = 'Martin Fracker, Jr.';
+const fullTitle = title === owner ? owner : `${title} — ${owner}`;
+const url = new URL(Astro.url.pathname, Astro.site).href;
+const nav = [
+  ['/', 'Home'],
+  ['/about/', 'About'],
+  ['/home-network/', 'Home network'],
+];
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="color-scheme" content="light dark" />
+    <title>{fullTitle}</title>
+    <meta name="description" content={description} />
+    {canonical && <link rel="canonical" href={url} />}
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={fullTitle} />
+    <meta property="og:description" content={description} />
+    {canonical && <meta property="og:url" content={url} />}
+    <meta name="twitter:card" content="summary" />
+  </head>
+  <body class={`page-${page}`}>
+    <a class="skip" href="#main">
+      Skip to content
+    </a>
+    <header class="bar">
+      <a class="mark" href="/" aria-label={`${owner}, home`}>
+        MF<span>/</span>JR
+      </a>
+      <nav aria-label="Site">
+        <ol>
+          {nav.map(([href, label], i) => (
+            <li>
+              <a href={href} aria-current={Astro.url.pathname === href ? 'page' : undefined}>
+                <span class="n">{String(i + 1).padStart(2, '0')}</span>
+                {label}
+              </a>
+            </li>
+          ))}
+        </ol>
+      </nav>
+    </header>
+    <main id="main">
+      <slot />
+    </main>
+    <footer class="bar">
+      <span>
+        © {new Date().getFullYear()} {owner}
+      </span>
+      <a href="#main">Back to top ↑</a>
+    </footer>
+  </body>
+</html>

@@ -1,7 +1,8 @@
 dist/
 node_modules/
+.astro/
 .omc/
+.claude/
 content/
-templates/
 package-lock.json
 *.md

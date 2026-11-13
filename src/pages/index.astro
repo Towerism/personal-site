@@ -1,0 +1,22 @@
+---
+import { getEntry, render } from 'astro:content';
+import Base from '../layouts/Base.astro';
+
+const home = (await getEntry('pages', 'home'))!;
+const { Content } = await render(home);
+// "Martin Fracker, Jr." → "Martin" / "Fracker, Jr" with the full stop set in the signal color.
+const [first, ...rest] = home.data.title.replace(/\.$/, '').split(' ');
+---
+
+<Base title={home.data.title} description={home.data.description} page="home">
+  <p class="masthead" aria-hidden="true">
+    <span>{first}</span>
+    <span>
+      {rest.join(' ')}
+      <span class="dot">.</span>
+    </span>
+  </p>
+  <article class="prose">
+    <Content />
+  </article>
+</Base>
