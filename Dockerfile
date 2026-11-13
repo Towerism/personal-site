@@ -1,6 +1,5 @@
-# Build stage: run the tests, then build dist/. No --platform=$BUILDPLATFORM:
-# the legacy builder (no BuildKit) leaves it empty and fails, and Portainer may
-# build with it. CI's arm64 build runs this stage under QEMU instead.
+# Build stage: run the tests, then build dist/. CI builds the arm64 image by
+# running this stage under QEMU; the Pi pulls that image and never builds (#10).
 FROM node:24-alpine AS build
 WORKDIR /app
 COPY package.json package-lock.json ./
