@@ -1,15 +1,17 @@
-# Build stage: run the tests, then build dist/ from content/. It runs on the
-# builder's own platform because dist/ is the same for every architecture.
-FROM --platform=$BUILDPLATFORM node:22.23-alpine AS build
+# Build stage: run the tests, then build dist/. No --platform=$BUILDPLATFORM:
+# the legacy builder (no BuildKit) leaves it empty and fails, and Portainer may
+# build with it. CI's arm64 build runs this stage under QEMU instead.
+FROM node:24-alpine AS build
 WORKDIR /app
 COPY package.json package-lock.json ./
 RUN npm ci
 COPY . .
 ARG SITE_URL=https://martinfrackerjr.com
-RUN npm test && SITE_URL="$SITE_URL" npm run build
+ENV SITE_URL=$SITE_URL
+RUN npm test && npm run build
 
-# Serve stage: Caddy serves the static files only, as a non-root user. It
-# listens on 8080, which needs no privilege to bind.
+# Serve stage: Caddy serves the static files as a non-root user on 8080.
+# busybox wget is included for the docker-compose healthcheck.
 FROM caddy:2.11-alpine
 RUN addgroup -S site && adduser -S -G site -H -s /sbin/nologin site \
 	&& chown -R site:site /data /config

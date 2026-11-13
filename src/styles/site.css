@@ -1,0 +1,322 @@
+:root {
+  --paper: #ece8df;
+  --ink: #151515;
+  --signal: #ff4a1c;
+  --rule: color-mix(in srgb, var(--ink) 22%, transparent);
+  --gutter: clamp(1rem, 3vw, 2.5rem);
+  --display: "Archivo Variable", "Arial Narrow", sans-serif;
+  --mono: "IBM Plex Mono", ui-monospace, monospace;
+  color-scheme: light dark;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --paper: #121212;
+    --ink: #ece8df;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  @view-transition {
+    navigation: auto;
+  }
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--display);
+  font-size: 100%;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  min-height: 100svh;
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  line-height: 1.55;
+  font-size: clamp(1.0625rem, 0.4vw + 0.95rem, 1.25rem);
+  /* A signal-colored edge down the left of every page. */
+  border-left: 0.5rem solid var(--signal);
+}
+
+::selection {
+  background: var(--signal);
+  color: #151515;
+}
+
+a {
+  color: inherit;
+  text-decoration-line: underline;
+  text-decoration-color: var(--signal);
+  text-decoration-thickness: 0.14em;
+  text-underline-offset: 0.2em;
+}
+
+a:hover {
+  background: var(--signal);
+  color: #151515;
+  text-decoration: none;
+}
+
+:focus-visible {
+  outline: 3px solid var(--signal);
+  outline-offset: 3px;
+}
+
+.skip {
+  position: absolute;
+  left: -100vw;
+}
+
+.skip:focus {
+  left: var(--gutter);
+  top: 0.5rem;
+  z-index: 1;
+  background: var(--signal);
+  color: #151515;
+  padding: 0.5rem 0.75rem;
+}
+
+/* Header and footer bars: mono, uppercase, hairline-ruled. */
+.bar {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 0.75rem 2rem;
+  padding: 1rem var(--gutter);
+  font-family: var(--mono);
+  font-size: 0.8125rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+header.bar {
+  border-bottom: 1px solid var(--ink);
+}
+
+footer.bar {
+  border-top: 1px solid var(--ink);
+  margin-top: clamp(4rem, 10vw, 8rem);
+}
+
+.bar a {
+  text-decoration: none;
+}
+
+.mark {
+  font-weight: 500;
+}
+
+.mark span {
+  color: var(--signal);
+}
+
+nav ol {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem 1.5rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+nav a {
+  padding: 0.15rem 0.35rem;
+}
+
+nav .n {
+  color: var(--signal);
+  margin-right: 0.35em;
+}
+
+nav a[aria-current="page"] {
+  background: var(--ink);
+  color: var(--paper);
+}
+
+main {
+  padding: 0 var(--gutter);
+}
+
+/* Viewport-sized, ultra-condensed display type. */
+.masthead,
+.big404,
+.prose h1 {
+  font-stretch: 62%;
+  font-weight: 850;
+  line-height: 0.82;
+  letter-spacing: -0.01em;
+  text-transform: uppercase;
+}
+
+.masthead {
+  margin: clamp(1.5rem, 4vw, 3rem) 0 0;
+  font-size: clamp(4.5rem, 21vw, 24rem);
+  padding-bottom: clamp(1rem, 3vw, 2.5rem);
+  border-bottom: 1px solid var(--ink);
+}
+
+.masthead > span {
+  display: block;
+}
+
+.masthead .dot,
+.big404 {
+  color: var(--signal);
+}
+
+.big404 {
+  margin: clamp(1rem, 3vw, 2rem) 0 0;
+  font-size: clamp(9rem, 48vw, 40rem);
+  line-height: 0.78;
+}
+
+/* Rendered Markdown. On wide screens headings sit in a left rail and text in the right
+   eight columns, so any page reads like a spec sheet without markup in the content. */
+.prose {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  column-gap: var(--gutter);
+}
+
+.prose > * {
+  grid-column: 1 / -1;
+  max-width: 62ch;
+}
+
+.prose h1 {
+  max-width: none;
+  margin: clamp(1.5rem, 4vw, 3rem) 0 clamp(2rem, 5vw, 4rem);
+  font-size: clamp(3.5rem, 13vw, 14rem);
+}
+
+.prose h2,
+.prose h3 {
+  font-stretch: 75%;
+  font-weight: 800;
+  text-transform: uppercase;
+  line-height: 0.95;
+}
+
+.prose h2 {
+  max-width: none;
+  margin: clamp(3rem, 7vw, 6rem) 0 1.5rem;
+  padding-top: 0.75rem;
+  border-top: 6px solid var(--ink);
+  font-size: clamp(2rem, 5vw, 4rem);
+}
+
+.prose h3 {
+  margin: 0;
+  padding-top: 1.25rem;
+  border-top: 1px solid var(--rule);
+  font-size: clamp(1.5rem, 2.4vw, 2.25rem);
+  counter-increment: service;
+}
+
+/* Services are numbered 01, 02, … in the signal color. */
+.prose h3::before {
+  content: counter(service, decimal-leading-zero);
+  display: block;
+  margin-bottom: 0.4rem;
+  color: var(--signal);
+  font-family: var(--mono);
+  font-size: 0.8125rem;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+}
+
+.prose p,
+.prose ul {
+  margin: 0 0 1.25rem;
+}
+
+.prose h3 + p {
+  padding-top: 1.25rem;
+}
+
+/* The first paragraph is the lede. */
+.prose > p:first-of-type {
+  max-width: 38ch;
+  font-size: clamp(1.375rem, 2vw, 1.75rem);
+  font-weight: 500;
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+}
+
+/* Lists become numbered spec rows (HW-01, HW-02, … on the home network page). */
+.prose ul {
+  padding: 0;
+  list-style: none;
+  counter-reset: row;
+  border-bottom: 1px solid var(--rule);
+}
+
+.prose li {
+  display: grid;
+  grid-template-columns: 5.5ch 1fr;
+  gap: 1rem;
+  padding: 0.75rem 0;
+  border-top: 1px solid var(--rule);
+  counter-increment: row;
+}
+
+.prose li::before {
+  content: counter(row, decimal-leading-zero);
+  color: var(--signal);
+  font-family: var(--mono);
+  font-size: 0.8125rem;
+  font-weight: 500;
+  padding-top: 0.3em;
+}
+
+.page-home-network .prose li::before {
+  content: "HW-" counter(row, decimal-leading-zero);
+}
+
+@media (min-width: 60rem) {
+  .prose > * {
+    grid-column: 5 / -1;
+  }
+
+  .prose > h1,
+  .prose > h2 {
+    grid-column: 1 / -1;
+  }
+
+  .prose > h3 {
+    grid-column: 1 / 5;
+  }
+
+  .prose > h3 + p {
+    border-top: 1px solid var(--rule);
+  }
+
+  /* Home: the masthead carries the name, so the greeting moves to the rail. */
+  .page-home .prose > h1 {
+    grid-column: 1 / 5;
+    margin-top: 2.5rem;
+    font-size: clamp(2.5rem, 4.5vw, 4.5rem);
+    line-height: 0.9;
+  }
+
+  .page-home .prose > p:first-of-type {
+    margin-top: 2.5rem;
+  }
+}
+
+/* 404: the signal-colored number is the headline, so the Markdown heading steps back. */
+.page-404 .prose > h1 {
+  margin-top: clamp(1.5rem, 4vw, 3rem);
+  font-size: clamp(2.5rem, 6vw, 5.5rem);
+  line-height: 0.9;
+}

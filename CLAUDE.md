@@ -1,17 +1,17 @@
 # personal-site-redesign — Agent & Human Shipyard
 
 ## Project conventions
-- Content is Markdown under `content/`; a change to wording never touches `templates/`, `public/` or `build.mjs`. Why: the owner must be able to edit the site without learning anything else.
-- `marked` is the only runtime dependency. Add another only when the code it replaces is larger than the dependency's footprint and you state that comparison in the PR. Why: the site was redesigned to escape framework weight.
-- No inline `<script>`, inline handler or `style=` attribute in output HTML. Why: the site ships a strict `script-src 'self'` CSP; one inline script breaks it.
-- Every motion effect is gated by `prefers-reduced-motion` and by the `js` class on `<html>`; with either off, the page is complete static HTML. The one exception is the page cross-fade (`@view-transition`): an at-rule cannot be scoped to a class, and it runs once per navigation. Why: content must be readable without JS.
+- Content is Markdown under `content/`; a change to wording touches only `content/*.md`. Why: the owner must be able to edit the site without learning Astro.
+- Content frontmatter must be valid YAML with `title` and `description` only; quote a value that contains `: `. Why: Astro's `glob` loader parses it strictly and the build fails otherwise.
+- Output HTML carries no inline `<script>`, `<style>` or `style=` attribute, and no client JS ships; keep `build.inlineStylesheets: 'never'` in `astro.config.mjs`. Why: the Caddyfile CSP is `default-src 'none'` with only same-origin styles, fonts and images. `test/build.test.mjs` fails on a violation.
+- Motion is limited to the `@view-transition` cross-fade, inside `prefers-reduced-motion: no-preference`. Why: the design is static and typographic.
+- `docker-compose.yml` is deployed by Portainer from git; change its structure only on the owner's request. The `Dockerfile` must build with the legacy builder too, so it uses no `--platform=$BUILDPLATFORM`. Why: Portainer may build without BuildKit, which leaves that variable empty and fails.
 - Commit and branch rules come from the global workflow (Conventional Commits ending `(#N)`, no squash).
 
 ## Architecture principles
-- The build script is a pipeline of pure functions (`lib/`) around one `build()` entry; tests call `build()` into a temp dir and never touch `dist/`.
-- Visual and motion code is not unit tested; its pure parts live in `public/js/*-model.js` (`shouldAnimate` and `buildGraph` in `graph-model.js`, the motion toggle state in `motion-model.js`) so they can be.
-- Graph data is derived from `content/home-network.md`; never hand-edit `dist/assets/graph.json`.
-- `build.mjs` serves `public/css/*.css` and `public/js/*.js` under content-hashed names (`lib/assets.mjs`) and the Caddyfile caches those as immutable. Templates use the plain names; modules import each other only as `./name.js`, or the rewrite misses them.
+- Astro 7, static output into `dist/`, served by Caddy on `:8080`. Pages: `src/pages/index.astro` (home.md), `[slug].astro` (every other content file), `404.astro` (404.md); a new `content/<slug>.md` becomes `/<slug>/` with no code change, but appears in the nav only when added to `nav` in `src/layouts/Base.astro`.
+- All visual design lives in `src/styles/site.css`; tokens (`--paper`, `--ink`, `--signal`) are on `:root`. Rendered Markdown is styled through `.prose` selectors only, so content needs no classes or HTML.
+- Visual design is checked by eye (screenshots at 1440px and 390px), not by tests. `test/build.test.mjs` covers built output; `scripts/smoke.sh` covers the running container.
 
 ## Shared background
 - Glossary: GLOSSARY.md
@@ -20,4 +20,4 @@
 - Delivery follows the canonical workflow plan → execute → review → verify; `/oh-my-claudecode:launch` is an optional governed delivery pipeline (opt-in, invoke explicitly)
 - On term conflicts GLOSSARY.md wins; new terms are recorded the moment they settle
 - When a deferred surface first appears (standards, decision records, business knowledge, project skills, the design system), it gets an index section here at the moment it is created — never before
-- Issue tracker: GitHub, `Towerism/personal-site-redesign`. The owner's spec for the redesign is the body of issue #1.
+- Issue tracker: GitHub, `Towerism/personal-site`. The current design's spec is the body of issue #6.

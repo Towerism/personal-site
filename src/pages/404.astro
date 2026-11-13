@@ -1,0 +1,16 @@
+---
+import { getEntry, render } from 'astro:content';
+import Base from '../layouts/Base.astro';
+
+const page = (await getEntry('pages', '404'))!;
+const { Content } = await render(page);
+---
+
+<Base title={page.data.title} description={page.data.description} page="404" canonical={false}>
+  <p class="big404" aria-hidden="true">
+    404
+  </p>
+  <article class="prose">
+    <Content />
+  </article>
+</Base>
