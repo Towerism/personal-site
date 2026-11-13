@@ -5,7 +5,7 @@
 - Content frontmatter must be valid YAML with `title` and `description` only; quote a value that contains `: `. Why: Astro's `glob` loader parses it strictly and the build fails otherwise.
 - Output HTML carries no inline `<script>`, `<style>` or `style=` attribute, and no client JS ships; keep `build.inlineStylesheets: 'never'` in `astro.config.mjs`. Why: the Caddyfile CSP is `default-src 'none'` with only same-origin styles, fonts and images. `test/build.test.mjs` fails on a violation.
 - Motion is limited to the `@view-transition` cross-fade, inside `prefers-reduced-motion: no-preference`. Why: the design is static and typographic.
-- `docker-compose.yml` is deployed by Portainer from git; change its structure only on the owner's request. The `Dockerfile` must build with the legacy builder too, so it uses no `--platform=$BUILDPLATFORM`. Why: Portainer may build without BuildKit, which leaves that variable empty and fails.
+- `docker-compose.yml` is deployed by Portainer from git and runs the image CI publishes to GHCR on a `v*.*.*` tag, never a local build; change its structure only on the owner's request. Why: building on the Raspberry Pi stalls the host, and a reboot mid-build left the old site live (#10). A change reaches the live site only after a tag push and a Portainer redeploy (README "Deploy").
 - Commit and branch rules come from the global workflow (Conventional Commits ending `(#N)`, no squash).
 
 ## Architecture principles

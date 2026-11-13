@@ -38,19 +38,25 @@ npm run build         # writes dist/
 npm run format        # Prettier; format:check only reports
 ```
 
-Canonical and Open Graph URLs use `https://martinfrackerjr.com`; set `SITE_URL` to build for another address.
+Canonical and Open Graph URLs use `https://martinfrackerjr.com`; set the `SITE_URL` environment variable (or `docker build --build-arg SITE_URL=...`) to build for another address.
 
 ## Deploy
 
 The `Dockerfile` runs the tests, builds with `node:24-alpine` and copies `dist/` into a `caddy:2.11-alpine` image that runs as a non-root user on port 8080. The `Caddyfile` sets the security headers (a CSP that allows no scripts at all), caches `/_astro/*` forever and serves `404.html` with a 404 status.
 
 ```sh
-docker compose build
+docker build -t personal-site .
 docker run -d --name site -p 8080:8080 personal-site
 scripts/smoke.sh http://127.0.0.1:8080 site
 ```
 
-Portainer deploys `docker-compose.yml` from this repository: the container joins the external `web-proxy-net` network as `personal-site` and publishes no ports; the Caddy proxy there ends TLS, sends HSTS and forwards to `http://personal-site:8080`. `pull_policy: build` makes every "Pull and redeploy" rebuild the image from the pulled commit; without it compose keeps running the old image.
+Portainer deploys `docker-compose.yml` from this repository: the container joins the external `web-proxy-net` network as `personal-site` and publishes no ports; the Caddy proxy there ends TLS, sends HSTS and forwards to `http://personal-site:8080`. It runs `ghcr.io/towerism/personal-site:latest`, the image CI publishes; the Raspberry Pi never builds the image itself, because the build stalls the whole host.
+
+To ship a change:
+
+1. Merge it to `main`.
+2. Push a semver tag with no leading zeros, such as `v2026.1.5` (not `v2026.01.05`, which CI cannot publish), and wait for CI's `image` job to pass; it publishes the new `latest`.
+3. In Portainer, redeploy the `personal-site` stack. `pull_policy: always` makes it pull the new `latest`.
 
 ## CI and releases
 
