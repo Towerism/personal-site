@@ -19,20 +19,27 @@ before(async () => {
 
 after(() => rm(outDir, { recursive: true, force: true }));
 
+// Expected values come from the content files, so a wording edit never fails the build.
+const frontmatter = async (name) => {
+  const md = await readFile(join(root, 'content', `${name}.md`), 'utf8');
+  return (field) => md.match(new RegExp(`^${field}: (.*)$`, 'm'))[1];
+};
+
 const routes = [
-  ['index.html', 'Martin Fracker, Jr.', 'https://example.test/', 'Hi, I’m Martin'],
-  ['about/index.html', 'About me', 'https://example.test/about/', 'Joyent'],
-  ['home-network/index.html', 'Home network', 'https://example.test/home-network/', 'Vaultwarden'],
-  ['404.html', 'Page not found', null, 'interdimensional nanobots'],
+  ['home', 'index.html', 'https://example.test/'],
+  ['about', 'about/index.html', 'https://example.test/about/'],
+  ['home-network', 'home-network/index.html', 'https://example.test/home-network/'],
+  ['404', '404.html', null],
 ];
 
-for (const [path, title, canonical, text] of routes) {
-  test(`${path} renders its content page`, async () => {
-    const html = await page(path);
-    assert.match(html, new RegExp(`<title>${title}`));
-    assert.match(html, /<meta name="description" content="[^"]+"/);
-    assert.ok(html.includes(text), `body text "${text}" missing`);
+for (const [name, path, canonical] of routes) {
+  test(`${path} renders content/${name}.md`, async () => {
+    const [html, field] = await Promise.all([page(path), frontmatter(name)]);
+    assert.match(html, new RegExp(`<title>${field('title')}`));
+    assert.ok(html.includes(`<meta name="description" content="${field('description')}"`));
+    assert.match(html, /<article class="prose"><h1 id="[^"]+">\S/);
     if (canonical) assert.ok(html.includes(`<link rel="canonical" href="${canonical}"`));
+    else assert.doesNotMatch(html, /rel="canonical"/);
   });
 
   // The Caddyfile CSP allows only same-origin scripts and styles.

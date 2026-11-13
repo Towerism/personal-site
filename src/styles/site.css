@@ -2,6 +2,8 @@
   --paper: #ece8df;
   --ink: #151515;
   --signal: #ff4a1c;
+  /* Small text and focus rings need 4.5:1 on paper; the fill color gets 2.75:1. */
+  --signal-text: #b82d08;
   --rule: color-mix(in srgb, var(--ink) 22%, transparent);
   --gutter: clamp(1rem, 3vw, 2.5rem);
   --display: "Archivo Variable", "Arial Narrow", sans-serif;
@@ -13,6 +15,7 @@
   :root {
     --paper: #121212;
     --ink: #ece8df;
+    --signal-text: var(--signal);
   }
 }
 
@@ -67,7 +70,7 @@ a:hover {
 }
 
 :focus-visible {
-  outline: 3px solid var(--signal);
+  outline: 3px solid var(--signal-text);
   outline-offset: 3px;
 }
 
@@ -117,7 +120,7 @@ footer.bar {
 }
 
 .mark span {
-  color: var(--signal);
+  color: var(--signal-text);
 }
 
 nav ol {
@@ -134,7 +137,7 @@ nav a {
 }
 
 nav .n {
-  color: var(--signal);
+  color: var(--signal-text);
   margin-right: 0.35em;
 }
 
@@ -228,7 +231,7 @@ main {
   content: counter(service, decimal-leading-zero);
   display: block;
   margin-bottom: 0.4rem;
-  color: var(--signal);
+  color: var(--signal-text);
   font-family: var(--mono);
   font-size: 0.8125rem;
   font-weight: 500;
@@ -262,17 +265,17 @@ main {
 }
 
 .prose li {
-  display: grid;
-  grid-template-columns: 5.5ch 1fr;
-  gap: 1rem;
-  padding: 0.75rem 0;
+  position: relative;
+  padding: 0.75rem 0 0.75rem 5rem;
   border-top: 1px solid var(--rule);
   counter-increment: row;
 }
 
 .prose li::before {
   content: counter(row, decimal-leading-zero);
-  color: var(--signal);
+  position: absolute;
+  left: 0;
+  color: var(--signal-text);
   font-family: var(--mono);
   font-size: 0.8125rem;
   font-weight: 500;
