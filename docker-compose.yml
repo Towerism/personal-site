@@ -5,6 +5,9 @@ services:
       args:
         SITE_URL: ${SITE_URL:-https://martinfrackerjr.com}
     image: personal-site
+    # Portainer's redeploy runs `compose up` without --build; this makes it
+    # rebuild anyway instead of reusing the old personal-site image.
+    pull_policy: build
     # Caddy reaches the site as http://personal-site:8080 over web-proxy-net.
     container_name: personal-site
     restart: unless-stopped
