@@ -147,7 +147,7 @@ nav a[aria-current="page"] {
 }
 
 nav a[aria-current="page"] .n {
-  color: var(--signal);
+  color: inherit;
 }
 
 main {
