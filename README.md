@@ -50,7 +50,7 @@ docker run -d --name site -p 8080:8080 personal-site
 scripts/smoke.sh http://127.0.0.1:8080 site
 ```
 
-Portainer deploys `docker-compose.yml` from this repository: the container joins the external `web-proxy-net` network as `personal-site` and publishes no ports; the Caddy proxy there ends TLS, sends HSTS and forwards to `http://personal-site:8080`.
+Portainer deploys `docker-compose.yml` from this repository: the container joins the external `web-proxy-net` network as `personal-site` and publishes no ports; the Caddy proxy there ends TLS, sends HSTS and forwards to `http://personal-site:8080`. `pull_policy: build` makes every "Pull and redeploy" rebuild the image from the pulled commit; without it compose keeps running the old image.
 
 ## CI and releases
 
