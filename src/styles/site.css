@@ -146,6 +146,10 @@ nav a[aria-current="page"] {
   color: var(--paper);
 }
 
+nav a[aria-current="page"] .n {
+  color: var(--signal);
+}
+
 main {
   padding: 0 var(--gutter);
 }
